@@ -4,20 +4,20 @@ trigger:
     - master
   paths:
     include:
-    - environment_setup/arm-templates/*
+    - arm-templates/*
 pr:
   branches:
     include:
     - master
   paths:
     include:
-    - environment_setup/arm-templates/*
+    - arm-templates/*
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-- group: devopsforai-aml-vg
+- group: variablegroup
 
 
 steps:
@@ -25,10 +25,8 @@ steps:
   inputs:
     azureSubscription: 'AzureResourceConnection'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: '$(RESOURCE_GROUP)'
-    location: $(LOCATION)
     templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)/environment_setup/arm-templates/cloud-environment.json'
-    overrideParameters: '-baseName $(BASE_NAME) -location $(LOCATION) -workspace $(WORKSPACE_NAME)'
+    csmFile: '$(Build.SourcesDirectory)/arm-templates/cloud-environment.json'
+    overrideParameters: '-baseName $(BASE_NAME)'
     deploymentMode: 'Incremental'
   displayName: 'Deploy MLOps resources to Azure'
